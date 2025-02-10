@@ -44,3 +44,6 @@ export const GITHUB_STATS_COUNT_PRIVATE = true;
 export const GITHUB_STATS_INCLUDE_ALL_COMMITS = true;
 export const GITHUB_STATS_THEME_DARK = 'transparent';
 export const GITHUB_STATS_THEME_LIGHT = 'default';
+
+export const INDIEWEB_PREVIOUS_URL = 'https://xn--sr8hvo.ws/previous';
+export const INDIEWEB_NEXT_URL = 'https://xn--sr8hvo.ws/next';

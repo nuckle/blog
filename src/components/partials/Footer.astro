@@ -1,5 +1,6 @@
 ---
-import { START_YEAR, TITLE } from '@src/config';
+import { START_YEAR, AUTHOR, INDIEWEB_PREVIOUS_URL, INDIEWEB_NEXT_URL } from '@src/config';
+import Webring from '@components/partials/Webring.astro';
 const currentYear = new Date().getFullYear();
 
 interface Props {
@@ -17,14 +18,14 @@ const { class: className, ...rest } = Astro.props;
 	<div class='flex justify-center gap-3'>
 		<span class='footer-link'>
 			<a
-				class='hover:underline hover:text-cornflowerblue dark:hover:text-hotpink transition-colors'
+				class='hover:underline font-medium hover:text-cornflowerblue dark:hover:text-hotpink transition-colors'
 				href='/rss.xml'
 				target='_blank'>Feed</a
 			>
 		</span>
 		<span class='footer-link'>
 			<a
-				class='hover:underline hover:text-cornflowerblue dark:hover:text-hotpink transition-colors'
+				class='hover:underline font-medium hover:text-cornflowerblue dark:hover:text-hotpink transition-colors'
 				href='/sitemap-index.xml'
 				target='_blank'>Sitemap</a
 			>
@@ -35,7 +36,8 @@ const { class: className, ...rest } = Astro.props;
 			>Copyright &copy; {
 				`${currentYear === START_YEAR ? currentYear : START_YEAR + ' - ' + currentYear}`
 			}
+			{AUTHOR}
 		</span>
-		{TITLE}
 	</p>
+	<Webring class='justify-center' nextUrl={INDIEWEB_NEXT_URL} previousUrl={INDIEWEB_PREVIOUS_URL} />
 </footer>
