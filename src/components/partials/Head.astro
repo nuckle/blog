@@ -178,7 +178,7 @@ if (post && post.data.cover) {
 	<meta name='author' content={AUTHOR} />
 	<meta name='generator' content={Astro.generator} />
 	<link rel='sitemap' href='/sitemap-index.xml' />
-	{GITHUB_URL && <link rel="me" href=GITHUB_URL>}
+	{GITHUB_URL && <link rel="me" href={GITHUB_URL}>}
 	<link
 		rel='alternate'
 		title={`${TITLE} RSS`}
