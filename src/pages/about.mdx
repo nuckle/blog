@@ -1,0 +1,71 @@
+---
+---
+
+import Layout from '@components/layouts/Layout.astro';
+import GitHubStats from '@components/partials/GitHubStats.astro';
+import Badge from '@components/partials/Badge.astro';
+import {
+	PGP_URL,
+	TELEGRAM_URL,
+	BLUESKY_URL,
+	TWITTER_URL,
+	MATRIX_URL
+} from '@src/config';
+
+<Layout
+	title='About'
+	description="I'm a web developer sharing my journey, skills, and projects. Explore my blog for insights on coding, development tips, and tech experiences."
+	class='prose max-w-none dark:prose-invert'
+>
+
+# About
+
+Hey there! I'm Nuckle, a front-end developer who spends most of my time wrestling with JavaScript and CSS (and sometimes CSS wins 😅). When I'm not wrangling styles or making web apps responsive, you can find me working on back-end stuff or managing Linux server
+
+## Technologies I mainly use
+
+<ul class='not-prose flex flex-wrap gap-2'>
+	<li><Badge text='JS' class='!bg-yellow-400 !text-black' /></li>
+	<li><Badge text='TypeScript' class='!bg-blue-500 !text-white' /></li>
+	<li><Badge text='NodeJS' class='!bg-green-700 !text-white' /></li>
+	<li><Badge text='TailwindCSS' class='!bg-teal-500 !text-white' /></li>
+	<li><Badge text='Vite' class='!bg-purple-500 !text-white' /></li>
+	<li><Badge text='SASS' class='!bg-pink-500 !text-white' /></li>
+	<li><Badge text='Next.js' class='!bg-black !text-white' /></li>
+	<li><Badge text='Astro' class='!bg-indigo-600 !text-white' /></li>
+	<li><Badge text='MongoDB' class='!bg-green-600 !text-white' /></li>
+	<li><Badge text='PostgreSQL' class='!bg-indigo-500 !text-white' /></li>
+	<li><Badge text='Docker' class='!bg-blue-500 !text-white' /></li>
+</ul>
+
+## What I'd like to learn 😄
+
+<ul class='not-prose flex flex-wrap gap-2'>
+	<li><Badge text='Redux' class='!bg-purple-700 !text-white' /></li>
+	<li><Badge text='Deno' class='!bg-gray-700 !text-white' /></li>
+	<li><Badge text='Hono' class='!bg-orange-500 !text-white' /></li>
+	<li><Badge text='NestJS' class='!bg-red-600 !text-white' /></li>
+</ul>
+
+
+## Things I'm currently working on
+
+- [The Binding Of Isaac (Flash version) save editor](https://github.com/nuckle/tboi-flash-save-editor)
+
+## Code writing progress
+<GitHubStats />
+
+## Contact me
+
+Feel free to reach out to me! I'm always open to a good chat, collaboration, or just to share some memes
+
+
+<ul>
+	<li><a href={MATRIX_URL} rel='noopener noreferrer me'>Matrix</a></li>
+	<li><a href={TWITTER_URL} rel='noopener noreferrer me'>Twitter</a></li>
+	<li><a href={BLUESKY_URL} rel='noopener noreferrer me'>Bluesky</a></li>
+	<li><a href={TELEGRAM_URL} rel='noopener noreferrer me'>Telegram</a></li>
+	<li><a href={PGP_URL} rel='noopener noreferrer me'>PGP Public Key</a></li>
+</ul>
+
+</Layout>

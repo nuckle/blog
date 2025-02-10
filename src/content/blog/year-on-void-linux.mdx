@@ -1,0 +1,184 @@
+---
+title: "Year and a Half on Void Linux"
+date: 2025-02-07
+description: A detailed look at my 18-month experience with Void Linux — covering installation, stability, package management, system configuration, and daily usability as a Desktop OS. Find out why I stick with Void and whether it's the right distro for you
+tags: [linux, void linux]
+keywords: [void linux review, void linux experience, void linux setup, runit vs systemd, minimal linux distro, linux for advanced users, rolling release stability, xbps package manager, best lightweight linux distro]
+cover: '@assets/img/thumbnails/void-linux.png'
+---
+
+Void Linux is a small and independent Linux distribution I've been using Void for about a year and a half now as my main operating system.
+
+This post is just me sharing my experience - what I love about Void, the quirks, and some drawbacks you might run into.
+
+## My Setup
+
+For reference, here’s what my Void Linux setup looks like:
+
+- **Filesystem**: ext4
+- **Bootloader**: GRUB
+- **Encryption**: LUKS
+- **Display Protocol**: X11
+- **Sound System**: PipeWire
+- **Cron Daemon**: cronie
+- **Network**: NetworkManager + iwd
+- **NTP**: chrony
+- **Login Manager**: elogind
+- **Session Manager**: dbus
+
+
+## What I Like
+
+### Minimalism & Simplicity
+
+One of the biggest reasons I’ve stuck with Void is how clean it is out of the box. There’s no unnecessary software cluttering up my system, and configuration is straightforward. If you like tweaking your setup, Void is a dream - it lets you setup your OS exactly how you want, without much interference.
+
+Unlike some mainstream distros, there are very few layers of complexity. No random middleware controlling your system - just you, your config files, and full transparency.
+
+### Lightweight
+
+Void is naturally lightweight. Of course, if you install a full-fledged DE with tons of background services, it’ll bloat up like any other distro. But if you go minimal? It’s an excellent lightweight option. Some people find it to be faster in general, but I think it's kind of subjective.
+
+### Stability
+
+I’d say Void is as stable as your Linux knowledge allows it to be. If you’re comfortable reading documentation and troubleshooting, you’ll have a smooth experience. Compared to my time on Debian Sid, Void has been rock solid. No major issues so far.
+
+### Documentation
+
+The [official Void docs](https://docs.voidlinux.org/) are great - easy to understand and follow. That said, you’ll probably still rely on the Arch Wiki most of the time because most issues you encounter aren’t specific to Void. Generally speaking, if something works on Arch, chances are it works on Void too.
+
+The Void docs also acknowledge this:
+
+> This handbook is not an extensive guide on how to use and configure common
+> Linux software. The purpose of this document is to explain how to install,
+> configure, and maintain Void Linux systems, and to highlight the differences
+> between common Linux distributions and Void ...
+>
+> Those looking for tips and tricks on how to configure a Linux system in
+> general should consult upstream software documentation. Additionally, the Arch
+> Wiki provides a fairly comprehensive outline of common Linux software
+> configuration, and a variety of internet search engines are available for
+> further assistance.
+
+### Package Manager
+
+Void has a great package manager called `xbps`. It's known for being incredibly fast, efficient, and adept at handling system dependencies to minimize conflicts. In addition to its speed, `xbps` is highly flexible, offering numerous options for package management.
+
+This package manager comes with multiple commands, such as:
+
+- `xbps-query` – for searching and querying installed packages.
+- `xbps-install` – for installing or updating packages.
+- `xbps-remove` – for removing packages.
+
+For instance, to update all installed packages, you can use:
+
+```sh
+$ xbps-install -Su
+```
+
+The syntax might seem a bit lengthy or unfamiliar at first, but you'll get used it pretty quick. If you find yourself frequently managing packages, you can always just create aliases:
+
+```sh
+alias update='xbps-install -Su'
+```
+
+There's also a command called `xbps-src` that allows you to build your own packages. You only need to have a valid template for your package. It'll look similar to this:
+
+```sh
+pkgname=foo
+version=1.0
+revision=1
+build_style=gnu-configure
+short_desc="A short description max 72 chars"
+maintainer="name <email>"
+license="GPL-3.0-or-later"
+homepage="http://www.foo.org"
+distfiles="http://www.foo.org/foo-${version}.tar.gz"
+checksum="fea0a94d4b605894f3e2d5572e3f96e4413bcad3a085aae7367c2cf07908b2ff"
+```
+
+Thus, you easily host your packages in a git repository. When you need it, just clone and it build every package yourself. But, of course, [creating your own repository](https://docs.voidlinux.org/xbps/repositories/custom.html) is also a valid option.
+
+Also you can use `xbps` in any other Linux distro you like
+
+### Community
+
+Void’s community is small, but it feels better than most mainstream rolling-release distros. People are generally helpful and friendly. You can find them on [IRC](ircs://irc.libera.chat/#voidlinux) or [Reddit](https://www.reddit.com/r/voidlinux/).
+
+Contributing to Void Linux is also relatively easy if you're interested. All necessary requirements are outlined on [Void's GitHub page](https://github.com/void-linux/void-docs/blob/master/CONTRIBUTING.md)
+
+The only downside? Because the community is small, if you run into a Void-specific issue, there’s a chance no one has documented it yet. Sometimes, you’ll need to ask around or open an issue on their [GitHub](https://github.com/void-linux/void-packages). Not a dealbreaker for me, but worth mentioning.
+
+### No Systemd
+
+Void uses **runit** instead of systemd, and that's a good thing. You won't notice much of a difference, especially if you haven't tried to write your own services though. It just works for basic day-to-day usage, but with different commands.
+
+For instance, that's how you'd run a service
+
+```sh
+$ sv up <services>
+```
+
+Or how you'd view the status of a specific service
+
+```sh
+$ sv status <services>
+```
+
+You can even do something like this and view the status of all enabled services
+
+```sh
+$ sv status /var/service/*
+```
+
+Worth mentioning that Void has a great support for its init system. At first I was interested in Artix Linux, but I found their init system situation a bit messy. Yeah, I have a choice, but they're not equal in terms of support and I didn't find them stable enough.
+
+### ARM Support
+
+Void has [official support](https://docs.voidlinux.org/installation/guides/arm-devices/index.html) for some ARM devices, which is great as ARM-based devices become more common. Not all distros have this, but I suspect more will in the future.
+
+
+## The Drawbacks
+
+Alright, let’s talk about the downsides. These aren’t dealbreakers for me, but they might be for some people.
+
+### No Custom Kernels in the Repos
+
+Void doesn’t provide custom kernels (except for things like `rpi-kernel` or `pinephone-kernel`). If you want something like `zen-kernel`, you’ll need to write your own template or use an existing one. Basically, if you want a custom kernel, you’ll have to **learn to build it yourself**.
+
+### Missing Software
+
+For example, **Hyprland** isn’t in the Void repos and [probably won’t be anytime soon](https://github.com/void-linux/void-packages/issues/50824) due to maintenance concerns. Some crypto-related packages were also [removed a while back](https://github.com/void-linux/void-packages/pull/44422).
+
+To be clear, **you can install whatever software you want on Void**, but some things won’t be available in the official repositories. You’ll have to compile from source or find another way. If you need Hyprland, check out [this template](https://github.com/Makrennel/hyprland-void).
+
+[Some packages](https://docs.voidlinux.org/xbps/repositories/restricted.html) exist in repos, but in order to install them, you have to build them locally, which is quite simple on its own, but may be a bit inconvenient.
+
+### Installer and Outdated Images
+
+The installer is fine if you need a basic Linux installation. However, if you want to have things like LUKS encryption, filesystems like brtfs, or LVM, you’ll need to install Void manually.
+
+As for installation images, they can sometimes be outdated. Your system will install fine, but I’ve seen people complain about it. If that bothers you, you have two options:
+
+1. Build an image yourself using [void-mklive](https://github.com/void-linux/void-mklive).
+2. Use a community-built image from [voidbuilds.xyz](https://voidbuilds.xyz/download/).
+
+Personally, I just use the official images, and they work fine for me.
+
+---
+
+## Final Thoughts
+
+I don’t see myself leaving Void anytime soon. It’s simple, stable, and gives me full control over my system without unnecessary bloat.
+
+Is Void for everyone? **No.** If you want everything to "just work" with minimal effort, Void is not for you. But if you enjoy tinkering and don’t mind diving deeper into Linux, Void is an amazing distro.
+
+I didn’t mention **musl** much because I haven’t used it extensively. From what I’ve [seen](https://www.youtube.com/watch?v=T-PTboW-GbQ), you can daily-drive it, but I haven’t personally tested it.
+
+Would I recommend Void? **Yes** - if you like minimal, no-nonsense Linux that respects your choices. If not, there are easier options out there.
+
+If you want to try Void, I highly recommend [this guide](https://kennydodrill.com/blog/stable-void-linux-setup-guide/) by Kenneth Dodrill for a solid starting point. It helped me a lot back in the day :)
+
+Also, I’d recommend switching your default repository to [Fastly CDN](https://voidlinux.org/news/2023/02/1-new-repo-fastly.html) if your default one is slow.
+
+Either way, Void is staying on my machine for the foreseeable future.

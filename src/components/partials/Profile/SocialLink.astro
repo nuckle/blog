@@ -1,0 +1,21 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+	url: string;
+	description: string;
+	iconName: string;
+}
+
+const { url, description, iconName } = Astro.props;
+---
+
+<a
+	href={url}
+	class='block p-1 dark:hover:bg-slategray hover:bg-silver hover:opacity-75 transition-all rounded-md'
+	rel='noopener noreferrer me'
+	target='_blank'
+>
+	<span class='sr-only'>{description}</span>
+	<Icon class='h-5 w-5' name={iconName} />
+</a>

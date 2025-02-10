@@ -1,0 +1,98 @@
+---
+export const partial = true;
+---
+
+<div class='comments'>
+	<script>
+		import {
+			GISCUS_REPO,
+			GISCUS_REPO_ID,
+			GISCUS_CATEGORY,
+			GISCUS_CATEGORY_ID,
+			GISCUS_MAPPING,
+			GISCUS_INPUT_POSITION,
+			GISCUS_LANG,
+			GISCUS_STRICT,
+			GISCUS_REACTIONS_ENABLED,
+			GISCUS_EMIT_METADATA,
+			GISCUS_LAZY,
+			GISCUS_LIGHT_THEME,
+			GISCUS_DARK_THEME,
+		} from '@src/config';
+		import { getTheme } from '@src/lib/helpers';
+
+		function getGiscusTheme() {
+			const theme = getTheme();
+			const gisTheme = theme === 'light' ? GISCUS_LIGHT_THEME : GISCUS_DARK_THEME;
+
+			return gisTheme;
+		}
+
+		const setGiscusTheme = () => {
+			const iframe = document.querySelector(
+				'iframe.giscus-frame',
+			) as HTMLIFrameElement | null;
+
+			const setGiscusSrc = (theme: string) => {
+				if (iframe) {
+					const iframeSrc = iframe.src;
+					const iframeUrl = new URL(iframeSrc);
+					const iframeSearchParams = iframeUrl.searchParams;
+					iframeSearchParams.set('theme', theme);
+
+					iframe.src = iframeUrl.toString();
+				}
+			};
+
+			const sendMessage = (message: object) => {
+				if (iframe?.contentWindow) {
+					iframe.contentWindow.postMessage(
+						{ giscus: message },
+						'https://giscus.app',
+					);
+				}
+			};
+
+			// Giscus doesn't accept messages if it's not loaded
+			if (iframe?.classList.contains('giscus-frame--loading')) {
+				setGiscusSrc(getGiscusTheme());
+			} else {
+				sendMessage({ setConfig: { theme: getGiscusTheme() } });
+			}
+		};
+
+		document.addEventListener('DOMContentLoaded', () => {
+			const giscusAttributes = {
+				src: 'https://giscus.app/client.js',
+				'data-repo': GISCUS_REPO,
+				'data-repo-id': GISCUS_REPO_ID,
+				'data-category': GISCUS_CATEGORY,
+				'data-category-id': GISCUS_CATEGORY_ID,
+				'data-mapping': GISCUS_MAPPING,
+				'data-strict': GISCUS_STRICT ? '1' : '0',
+				'data-reactions-enabled': GISCUS_REACTIONS_ENABLED ? '1' : '0',
+				'data-emit-metadata': GISCUS_EMIT_METADATA ? '1' : '0',
+				'data-theme': getGiscusTheme(),
+				'data-input-position': GISCUS_INPUT_POSITION,
+				'data-lang': GISCUS_LANG,
+				...(GISCUS_LAZY ? { 'data-loading': 'lazy' } : {}),
+				crossorigin: 'anonymous',
+				async: '',
+			};
+
+			// Dynamically create script tag.
+			const giscusScript = document.createElement('script');
+			Object.entries(giscusAttributes).forEach(([key, value]) =>
+				giscusScript.setAttribute(key, value),
+			);
+			document.querySelector('.comments')?.appendChild(giscusScript);
+
+			// Update giscus theme when the theme switcher is clicked.
+			const themeSwitcher = document.querySelector('#themeToggle');
+			if (themeSwitcher) {
+				themeSwitcher.addEventListener('themeToggle', setGiscusTheme);
+			}
+		});
+	</script>
+	<noscript>Please enable JavaScript to view and post comments</noscript>
+</div>

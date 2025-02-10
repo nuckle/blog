@@ -1,0 +1,179 @@
+---
+import { Image } from 'astro:assets';
+import type { Post } from '@src/types/Post';
+import { Icon } from 'astro-icon/components';
+import Layout from '@components/layouts/Layout.astro';
+import ReadingTime from '@components/partials/ReadingTime.astro';
+import Footer from '@components/partials/Footer.astro';
+import Comments from '@components/partials/Comments.astro';
+import FormattedDate from '@components/partials/FormattedDate.astro';
+import PostTags from '@components/partials/PostTags.astro';
+import TableOfContents from '@components/partials/TableOfContents/TableOfContents.astro';
+import RelatedPosts from '@components/partials/RelatedPosts.astro';
+import { getAllPosts } from '@lib/utils';
+
+interface Props {
+	post: Post;
+}
+
+export async function getStaticPaths() {
+	const blogPosts = await getAllPosts();
+	return blogPosts.map((post: Post) => ({
+		params: { slug: post.slug },
+		props: { post },
+	}));
+}
+const { post } = Astro.props;
+const { Content, headings } = await post.render();
+---
+
+<Layout
+	includeFooter={false}
+	class='!mb-0'
+	title={post.data.title}
+	keywords={post.data.keywords}
+	post={post}
+	description={post.data.description}
+>
+	<div
+		class='flex flex-col md:flex-row-reverse justify-center gap-x-3'
+		data-pagefind-body
+	>
+		<TableOfContents headings={headings} />
+		<div class='max-w-full'>
+			<article
+				class='prose mb-8 overflow-hidden lg:prose-xl max-w-none dark:prose-invert'
+			>
+				<div class='relative'>
+					<Image
+						src={post.data.cover}
+						sizes='(min-width: 1024px) 1024px, 100vw'
+						alt={post.data.title}
+						class='object-cover object-center block w-full max-w-full'
+					/>
+				</div>
+				<h1 class='md:!text-5xl md:!leading-[1.2]'>{post.data.title}</h1>
+
+				<div class='flex gap-x-4 gap-y-1 flex-wrap'>
+					<span class='flex items-center gap-x-1 opacity-85'>
+						<span class='sr-only'>Publication date</span>
+						<Icon name='meteor-icons:calendar' class='h-6 w-6' />
+						<FormattedDate date={post.data.date} longMonth={true} />
+					</span>
+
+					{
+						post.data.lastModifiedDate && (
+							<span class='flex items-center gap-x-1 opacity-85'>
+								<span class='sr-only'>Last modified date</span>
+								<Icon name='meteor-icons:clock-rotate' class='h-6 w-6' />
+								<FormattedDate date={post.data.lastModifiedDate} longMonth={true} />
+							</span>
+						)
+					}
+
+					<span class='flex items-center gap-x-1 opacity-85'>
+						<span class='sr-only'>Reading time</span>
+						<Icon name='meteor-icons:clock' class='h-6 w-6' />
+						<ReadingTime body={post.body} />
+					</span>
+				</div>
+
+				<Content />
+
+				<PostTags tags={post.data.tags} class='mb-2' />
+
+				<div id='giscus'>
+					<Comments />
+				</div>
+
+				<RelatedPosts tags={post.data.tags} slug={post.slug} />
+			</article>
+			<Footer class='mx-auto w-full mt-auto rounded-xl' />
+		</div>
+	</div>
+</Layout>
+
+<script>
+	import { toggleActiveTocItem } from '@src/lib/helpers';
+
+	const observer = new IntersectionObserver(
+		(entries) => {
+			let activeTocItem = null;
+
+			for (const entry of entries) {
+				const tocItem = document.querySelector(`a[href="#${entry.target.id}"]`);
+
+				if (entry.isIntersecting) {
+					activeTocItem = tocItem;
+				}
+			}
+
+			if (activeTocItem) {
+				toggleActiveTocItem(activeTocItem);
+			}
+		},
+		{ root: null, rootMargin: '0px', threshold: 1 },
+	);
+
+	document
+		.querySelectorAll(
+			'article > h2, article > h3, article > h4, article > h5, article > h6',
+		)
+		.forEach((heading) => observer.observe(heading));
+</script>
+
+<script>
+	let copyButtonLabel = 'Copy code';
+	let codeBlocks: HTMLElement[] = Array.from(
+		document.querySelectorAll('[data-rehype-pretty-code-figure]'),
+	);
+
+	for (let codeBlock of codeBlocks) {
+		const wrapper = document.createElement('div');
+		wrapper.classList.add('code-wrapper');
+
+		const codeBlockPre: HTMLElement | null = codeBlock?.querySelector('pre');
+
+		if (codeBlockPre) {
+			let copyButton = document.createElement('button');
+			copyButton.className = 'copy-code';
+
+			let copyLabelEL = document.createElement('span');
+			copyLabelEL.innerText = copyButtonLabel;
+			copyLabelEL.classList.add('sr-only');
+			copyButton.appendChild(copyLabelEL);
+
+			codeBlockPre.setAttribute('tabindex', '0');
+			codeBlockPre.appendChild(copyButton);
+
+			codeBlockPre.parentNode?.insertBefore(wrapper, codeBlockPre);
+			wrapper.appendChild(codeBlockPre);
+
+			copyButton.addEventListener('click', async () => {
+				await copyCode(codeBlock, copyLabelEL, copyButton);
+			});
+		}
+	}
+
+	async function copyCode(
+		block: HTMLElement,
+		label: HTMLElement,
+		button: HTMLButtonElement,
+	) {
+		let code = block.querySelector('code');
+		let text = code?.innerText;
+
+		if (text) await navigator.clipboard.writeText(text);
+
+		// visual feedback that task is completed
+		label.innerText = 'Copied';
+		button.classList.add('copy-code--copied');
+		button.disabled = true;
+
+		setTimeout(() => {
+			label.innerText = copyButtonLabel;
+			button.classList.remove('copy-code--copied');
+			button.disabled = false;
+		}, 700);
+	}
+</script>

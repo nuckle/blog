@@ -1,0 +1,18 @@
+---
+import Layout from '@components/layouts/Layout.astro';
+import ProjectCard from '@components/partials/ProjectCard.astro';
+
+import minecraftImage from '@assets/img/thumbnails/minecraft-offline-uuid-generator.png';
+import youtubeChannelImage from '@assets/img/thumbnails/youtube-channel-id-extractor.png';
+import redditChatMobile from '@assets/img/thumbnails/reddit-mobile-chat-fix.png';
+---
+
+<Layout
+	title='Projects'
+	description='My personal and professional projects, ranging from web development to creative experiments and passion projects. Showcasing my skills, ideas, and innovations in various fields.'
+>
+	<ProjectCard title={'Minecraft Offline UUID generator'} description={'A web tool to fetch Minecraft UUIDs from usernames. Supports both online mode (via Mojang API) and offline mode for non-premium accounts'} tags={['PWA', 'JavaScript', 'Vite', 'SASS']} link={'https://github.com/nuckle/minecraft-offline-uuid-generator'} img={minecraftImage} class='mb-7' />
+	<ProjectCard title={'YouTube Channel Id Extractor'} description={'A lightweight tool to extract YouTube channel IDs from any type of URL, including videos, playlists, and community posts'} tags={['TypeScript', 'PWA', 'Next.js']} link={'https://github.com/nuckle/youtube-channel-id-extractor'} img={youtubeChannelImage} class='mb-7' />
+
+	<ProjectCard title={'Reddit Mobile Chat Fix'} description={'A browser extension that improves the Reddit chat experience on mobile by fixing UI issues and enhancing usability'} tags={['TypeScript', 'Vite', 'Browser extension']} link={'https://github.com/nuckle/reddit-mobile-chat-fix'} img={redditChatMobile}  />
+</Layout>

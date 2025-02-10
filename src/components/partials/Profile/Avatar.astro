@@ -1,0 +1,19 @@
+---
+import { Image } from 'astro:assets';
+import { AUTHOR } from '@src/config';
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<Image
+	class:list={['rounded-full h-fit', className]}
+	src='/avatar.png'
+	alt={AUTHOR}
+	loading='lazy'
+	width='140'
+	height='140'
+/>

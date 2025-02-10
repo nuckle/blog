@@ -1,0 +1,300 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--darkslategray: #282a36;
+	--sandybrown: #f7b269;
+	--slategray: #4c515d;
+	--gunmetal: #373a42;
+	--gainsboro: #dddee0;
+	--dracula: #282A36;
+	--darkblack: #1f202a;
+	--cornflowerblue: #44aeee;
+	--steelblue: #7d9cbb;
+	--hotpink: #ff79c6;
+	--lavenderblush: #fae7f4;
+	--silver: #bebebe;
+	--lightgray: #c9cacc;
+	--lightslategray: #929396;
+	--accent-light: #e8e8e8;
+	--accent-dark: #232530;
+}
+
+.scrollToTopBtn--visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation: none;
+	mix-blend-mode: normal;
+}
+
+html {
+	scroll-behavior: smooth;
+	background-color: var(--accent-light);
+}
+
+html .prose {
+	--tw-prose-quote-borders: theme(colors.gray.300);
+}
+
+html.dark {
+	background-color: var(--accent-dark);
+	color: #fff;
+	--pagefind-ui-primary: #eeeeee;
+	--pagefind-ui-text: #eeeeee;
+	--pagefind-ui-background: var(--darkslategray);
+	--pagefind-ui-border: var(--lavenderblush);
+	--pagefind-ui-tag: #232530;
+}
+
+.dark .nav-links a {
+	color: #fff;
+}
+
+header {
+	background-color: var(--accent-light);
+}
+
+html.dark header {
+	background-color: var(--accent-dark);
+}
+
+#themeToggle {
+	border: 0;
+}
+
+html .sun {
+	fill: #000;
+}
+
+html .moon {
+	fill: transparent;
+	display: none;
+}
+
+html.dark .sun {
+	fill: transparent;
+	display: none;
+}
+
+html.dark .moon {
+	fill: #fff;
+	display: initial;
+}
+
+[data-rehype-pretty-code-figure] {
+	@apply rounded-lg;
+}
+
+[data-rehype-pretty-code-figure] span {
+	color: var(--shiki-light) !important;
+}
+
+[data-rehype-pretty-code-figure] pre {
+	@apply overflow-auto;
+	@apply scrollbar-thin scrollbar-thumb-silver dark:scrollbar-thumb-lightslategray hover:scrollbar-thumb-gray-400 dark:hover:scrollbar-thumb-gray-500 active:scrollbar-thumb-gray-500 dark:active:scrollbar-thumb-gray-400;
+	@apply rounded-lg;
+
+	font-family: 'Fira Code Variable', ui-monospace, SFMono-Regular, Menlo, Monaco,
+		Consolas, 'Liberation Mono', 'Courier New', monospace;
+	margin: 0;
+	background: var(--shiki-light-bg) !important;
+}
+
+.code-wrapper {
+	position: relative;
+}
+
+[data-rehype-pretty-code-figure]
+	[data-rehype-pretty-code-title]
+	~ .code-wrapper
+	pre {
+	@apply rounded-t-none;
+}
+
+[data-rehype-pretty-code-figure] code[data-line-numbers] {
+	counter-reset: line;
+}
+
+[data-rehype-pretty-code-title] {
+	@apply px-4 py-2;
+	@apply bg-gray-100;
+	border-top-right-radius: inherit;
+	border-top-left-radius: inherit;
+}
+
+html.dark [data-rehype-pretty-code-title] {
+	@apply bg-gray-700;
+	@apply text-gray-200;
+}
+
+[data-highlighted-line] {
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-color: var(--lightslategray);
+	background-color: var(--gainsboro);
+}
+
+html.dark [data-highlighted-line] {
+	background-color: var(--gunmetal);
+	border-color: var(--steelblue);
+}
+
+[data-rehype-pretty-code-figure] code[data-line-numbers] > [data-line]::before {
+	counter-increment: line;
+	content: counter(line);
+	display: inline-block;
+	width: 0.75rem;
+	margin-right: 2rem;
+	text-align: right;
+	color: var(--lightslategray);
+}
+
+[data-rehype-pretty-code-figure]:hover .copy-code,
+[data-rehype-pretty-code-figure] pre:focus .copy-code,
+.copy-code:hover,
+.copy-code:focus {
+	opacity: 1;
+}
+
+[data-rehype-pretty-code-figure]
+	code[data-line-numbers-max-digits='2']
+	> [data-line]::before {
+	width: 1.25rem;
+}
+
+[data-rehype-pretty-code-figure]
+	code[data-line-numbers-max-digits='3']
+	> [data-line]::before {
+	width: 1.75rem;
+}
+
+[data-rehype-pretty-code-figure]
+	code[data-line-numbers-max-digits='4']
+	> [data-line]::before {
+	width: 2.25rem;
+}
+
+html.dark [data-rehype-pretty-code-figure] span {
+	color: var(--shiki-dark) !important;
+}
+
+html.dark [data-rehype-pretty-code-figure] pre {
+	background: var(--shiki-dark-bg) !important;
+}
+
+.copy-code {
+	opacity: 0;
+	position: absolute;
+	top: max(3%, 0.5rem);
+	right: min(3%, 1rem);
+	padding: 0.25rem 0.5rem;
+	width: 1.5rem;
+	height: 1.5rem;
+	line-height: 1rem;
+	border-radius: 0.25rem;
+	background-image: url('../icons/clipboard.svg');
+	background-repeat: no-repeat;
+	background-position: center center;
+	transition:
+		0.2s filter ease,
+		0.2s opacity ease;
+}
+
+.copy-code--copied {
+	background-image: url('../icons/copied.svg');
+}
+
+.copy-code:hover {
+	filter: brightness(0) saturate(100%) invert(59%) sepia(5%) saturate(383%)
+		hue-rotate(191deg) brightness(97%) contrast(88%);
+}
+
+html.dark .copy-code {
+	filter: invert();
+}
+
+html.dark .copy-code:hover {
+	filter: brightness(0) saturate(100%) invert(92%) sepia(4%) saturate(105%)
+		hue-rotate(179deg) brightness(90%) contrast(88%);
+}
+
+.anchor-link {
+	margin-right: 0.4rem;
+	text-decoration: none;
+	color: var(--lightgray);
+	transition: color 0.15s ease;
+}
+
+.anchor-link:hover {
+	color: var(--cornflowerblue);
+}
+
+html.dark .anchor-link {
+	color: var(--lightslategray);
+}
+
+html.dark .anchor-link:hover {
+	color: var(--hotpink);
+}
+
+.active-toc-item {
+	font-weight: bold;
+	border-color: var(--sandybrown) !important;
+}
+
+html.dark .active-toc-item {
+	border-color: var(--steelblue) !important;
+}
+
+.pagefind-ui {
+	padding: 10px;
+}
+
+.pagefind-ui__search-clear::before {
+	content: url('/src/icons/close.svg');
+	display: block;
+	width: 20px;
+	height: 20px;
+	transition: filter 0.2s ease-in-out;
+}
+
+.pagefind-ui__search-clear:hover::before {
+	filter: brightness(0) saturate(100%) invert(98%) sepia(0%) saturate(316%)
+		hue-rotate(144deg) brightness(94%) contrast(71%);
+}
+
+html.dark .pagefind-ui__search-clear::before {
+	filter: invert(1);
+}
+
+html.dark .pagefind-ui__search-clear:hover::before {
+	filter: brightness(0) saturate(100%) invert(53%) sepia(2%) saturate(759%)
+		hue-rotate(319deg) brightness(81%) contrast(78%);
+}
+
+html.dark .pagefind-ui__button:hover {
+	border-color: var(--cornflowerblue);
+}
+
+@media screen and (max-width: 48rem) {
+	.table-of-contents {
+		@apply container px-4 fixed top-0 z-10 left-[50%] -translate-x-[50%] mt-16 bg-accentLight dark:bg-accentDark block shrink-0 w-full;
+	}
+}
+
+.footer-link {
+	position: relative;
+}
+
+.footer-link:not(:first-of-type)::before {
+	content: '·';
+	pointer-events: none;
+	text-decoration: none;
+	position: absolute;
+	left: -.5rem;
+}
