@@ -8,11 +8,11 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<p class={`h-card text-gray-600 dark:text-gray-400 font-medium ${className}`}>
+<p class={`p-author h-card text-gray-600 dark:text-gray-400 font-medium ${className}`}>
 	By
 	<a
 		href='/'
-		class='p-author u-url text-blue-600 dark:text-blue-400 hover:underline font-semibold'
+		class='u-url text-blue-600 dark:text-blue-400 hover:underline font-semibold'
 	>
 		{AUTHOR}
 	</a>
