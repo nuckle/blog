@@ -47,6 +47,7 @@ const { Content, headings } = await post.render();
 			>
 				<div class='relative'>
 					<Image
+						loading={'eager'}
 						src={post.data.cover}
 						alt={post.data.title}
 						class='object-cover object-center block w-full max-w-full not-prose mb-8'
