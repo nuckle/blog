@@ -50,6 +50,8 @@ const { Content, headings } = await post.render();
 						loading={'eager'}
 						src={post.data.cover}
 						alt={post.data.title}
+						widths={[360, 640, 768, 1024, 1080, 1280, 1668, 2048]}
+						sizes="(min-width: 1024px) 1024px, 100vw"
 						class='object-cover object-center block w-full max-w-full not-prose mb-8'
 					/>
 				</div>
