@@ -9,13 +9,13 @@ const { class: className } = Astro.props;
 ---
 
 <p
-	class={`p-author h-card text-gray-600 dark:text-gray-400 font-medium ${className}`}
+	class={`text-gray-600 dark:text-gray-400 font-medium ${className}`}
 >
 	By
 	<a
 		rel='author'
 		href='/'
-		class='u-url text-blue-600 dark:text-blue-400 hover:underline font-semibold'
+		class='p-author h-card u-url text-blue-600 dark:text-blue-400 hover:underline font-semibold'
 	>
 		{AUTHOR}
 	</a>
