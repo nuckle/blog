@@ -113,89 +113,89 @@ const { Content, headings } = await post.render();
 			<Footer class='mx-auto w-full mt-auto rounded-xl' />
 		</div>
 	</div>
-</Layout>
 
-<script>
-	import { toggleActiveTocItem } from '@src/lib/helpers';
+	<script>
+		import { toggleActiveTocItem } from '@src/lib/helpers';
 
-	const observer = new IntersectionObserver(
-		(entries) => {
-			let activeTocItem = null;
+		const observer = new IntersectionObserver(
+			(entries) => {
+				let activeTocItem = null;
 
-			for (const entry of entries) {
-				const tocItem = document.querySelector(`a[href="#${entry.target.id}"]`);
+				for (const entry of entries) {
+					const tocItem = document.querySelector(`a[href="#${entry.target.id}"]`);
 
-				if (entry.isIntersecting) {
-					activeTocItem = tocItem;
+					if (entry.isIntersecting) {
+						activeTocItem = tocItem;
+					}
 				}
+
+				if (activeTocItem) {
+					toggleActiveTocItem(activeTocItem);
+				}
+			},
+			{ root: null, rootMargin: '0px', threshold: 1 },
+		);
+
+		document
+			.querySelectorAll(
+				'article > div.content > h2, article > div.content > h3, article > div.content > h4, article > div.content > h5, article > div.content > h6',
+			)
+			.forEach((heading) => observer.observe(heading));
+	</script>
+
+	<script>
+		let copyButtonLabel = 'Copy code';
+		let codeBlocks: HTMLElement[] = Array.from(
+			document.querySelectorAll('[data-rehype-pretty-code-figure]'),
+		);
+
+		for (let codeBlock of codeBlocks) {
+			const wrapper = document.createElement('div');
+			wrapper.classList.add('code-wrapper');
+
+			const codeBlockPre: HTMLElement | null = codeBlock?.querySelector('pre');
+
+			if (codeBlockPre) {
+				let copyButton = document.createElement('button');
+				copyButton.className = 'copy-code';
+
+				let copyLabelEL = document.createElement('span');
+				copyLabelEL.innerText = copyButtonLabel;
+				copyLabelEL.classList.add('sr-only');
+				copyButton.appendChild(copyLabelEL);
+
+				codeBlockPre.setAttribute('tabindex', '0');
+				codeBlockPre.appendChild(copyButton);
+
+				codeBlockPre.parentNode?.insertBefore(wrapper, codeBlockPre);
+				wrapper.appendChild(codeBlockPre);
+
+				copyButton.addEventListener('click', async () => {
+					await copyCode(codeBlock, copyLabelEL, copyButton);
+				});
 			}
-
-			if (activeTocItem) {
-				toggleActiveTocItem(activeTocItem);
-			}
-		},
-		{ root: null, rootMargin: '0px', threshold: 1 },
-	);
-
-	document
-		.querySelectorAll(
-			'article > div.content > h2, article > div.content > h3, article > div.content > h4, article > div.content > h5, article > div.content > h6',
-		)
-		.forEach((heading) => observer.observe(heading));
-</script>
-
-<script>
-	let copyButtonLabel = 'Copy code';
-	let codeBlocks: HTMLElement[] = Array.from(
-		document.querySelectorAll('[data-rehype-pretty-code-figure]'),
-	);
-
-	for (let codeBlock of codeBlocks) {
-		const wrapper = document.createElement('div');
-		wrapper.classList.add('code-wrapper');
-
-		const codeBlockPre: HTMLElement | null = codeBlock?.querySelector('pre');
-
-		if (codeBlockPre) {
-			let copyButton = document.createElement('button');
-			copyButton.className = 'copy-code';
-
-			let copyLabelEL = document.createElement('span');
-			copyLabelEL.innerText = copyButtonLabel;
-			copyLabelEL.classList.add('sr-only');
-			copyButton.appendChild(copyLabelEL);
-
-			codeBlockPre.setAttribute('tabindex', '0');
-			codeBlockPre.appendChild(copyButton);
-
-			codeBlockPre.parentNode?.insertBefore(wrapper, codeBlockPre);
-			wrapper.appendChild(codeBlockPre);
-
-			copyButton.addEventListener('click', async () => {
-				await copyCode(codeBlock, copyLabelEL, copyButton);
-			});
 		}
-	}
 
-	async function copyCode(
-		block: HTMLElement,
-		label: HTMLElement,
-		button: HTMLButtonElement,
-	) {
-		let code = block.querySelector('code');
-		let text = code?.innerText;
+		async function copyCode(
+			block: HTMLElement,
+			label: HTMLElement,
+			button: HTMLButtonElement,
+		) {
+			let code = block.querySelector('code');
+			let text = code?.innerText;
 
-		if (text) await navigator.clipboard.writeText(text);
+			if (text) await navigator.clipboard.writeText(text);
 
-		// visual feedback that task is completed
-		label.innerText = 'Copied';
-		button.classList.add('copy-code--copied');
-		button.disabled = true;
+			// visual feedback that task is completed
+			label.innerText = 'Copied';
+			button.classList.add('copy-code--copied');
+			button.disabled = true;
 
-		setTimeout(() => {
-			label.innerText = copyButtonLabel;
-			button.classList.remove('copy-code--copied');
-			button.disabled = false;
-		}, 700);
-	}
-</script>
+			setTimeout(() => {
+				label.innerText = copyButtonLabel;
+				button.classList.remove('copy-code--copied');
+				button.disabled = false;
+			}, 700);
+		}
+	</script>
+</Layout>
