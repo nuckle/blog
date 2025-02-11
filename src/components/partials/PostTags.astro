@@ -13,7 +13,7 @@ const { tags, class: className } = Astro.props;
 <ul class:list={['!pl-0 !ps-0 flex flex-wrap gap-2 list-none', className]}>
 	{
 		tags.map((tag) => (
-			<li class='!pl-0'>
+			<li class='p-category !pl-0'>
 				<Tag href={'/tags/' + slugify(tag)} text={`#${tag}`} class={'py-0.5 px-1'} />
 			</li>
 		))

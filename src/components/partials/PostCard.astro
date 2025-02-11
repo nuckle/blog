@@ -2,20 +2,48 @@
 import FormattedDate from '@components/partials/FormattedDate.astro';
 import ReadingTime from '@components/partials/ReadingTime.astro';
 import PostTags from '@components/partials/PostTags.astro';
+import Author from '@components/partials/Author.astro';
 
-const { title, tags, date, slug, body } = Astro.props;
+interface Props {
+	title: string;
+	tags: string[];
+	publishedDate: Date;
+	lastModifiedDate?: Date;
+	slug: string;
+	body: string;
+}
+
+const { title, tags, publishedDate, lastModifiedDate, slug, body } =
+	Astro.props;
+
+const postUrl = '/blog/' + slug;
 ---
 
 <article
-	class='flex flex-col rounded-xl transition-transform transition-colors transition-shadow duration-550 ease-in-out hover:z-30 hover:shadow-lg md:shadow-xl md:hover:shadow-2xl md:hover:-translate-y-0.5 p-3 dark:bg-darkslategray bg-white'
+	class='h-entry flex flex-col rounded-xl transition-transform transition-colors transition-shadow duration-550 ease-in-out hover:z-30 hover:shadow-lg md:shadow-xl md:hover:shadow-2xl md:hover:-translate-y-0.5 p-3 dark:bg-darkslategray bg-white'
 >
 	<div class='flex gap-x-3 mb-1'>
-		<FormattedDate date={date} />
+		<a href={postUrl} class='group swap'>
+			{
+				lastModifiedDate && (
+					<FormattedDate
+						date={lastModifiedDate}
+						class='dt-updated opacity-0 group-hover:opacity-100 transition-opacity'
+					/>
+				)
+			}
+			<FormattedDate
+				date={publishedDate}
+				class=`dt-published ${lastModifiedDate ? 'group-hover:opacity-0 transition-opacity' : ''}`
+			/>
+		</a>
 		<ReadingTime class='opacity-65' body={body} />
 	</div>
 
-	<h2 class='font-bold mb-3'>
-		<a class='w-fit line-clamp-2' href={'/blog/' + slug}>
+	<Author class='hidden' />
+
+	<h2 class='p-name font-bold mb-3'>
+		<a class='u-url w-fit line-clamp-2' href={postUrl}>
 			{title}
 		</a>
 	</h2>

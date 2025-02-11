@@ -2,6 +2,7 @@
 
 <script>
 	import {
+		GITHUB_STATS_URL,
 		GITHUB_STATS_USERNAME,
 		GITHUB_STATS_SHOW_ICONS,
 		GITHUB_STATS_HIDE_BORDER,
@@ -35,7 +36,7 @@
 
 	document.addEventListener('DOMContentLoaded', () => {
 		const img = document.createElement('img');
-		img.src = `https://github-readme-stats.vercel.app/api?username=${GITHUB_STATS_USERNAME}&theme=${getStatsTheme()}&show_icons=${GITHUB_STATS_SHOW_ICONS}&hide_border=${GITHUB_STATS_HIDE_BORDER}&count_private=${GITHUB_STATS_COUNT_PRIVATE}&include_all_commits=${GITHUB_STATS_INCLUDE_ALL_COMMITS}`;
+		img.src = `${GITHUB_STATS_URL}/api?username=${GITHUB_STATS_USERNAME}&theme=${getStatsTheme()}&show_icons=${GITHUB_STATS_SHOW_ICONS}&hide_border=${GITHUB_STATS_HIDE_BORDER}&count_private=${GITHUB_STATS_COUNT_PRIVATE}&include_all_commits=${GITHUB_STATS_INCLUDE_ALL_COMMITS}`;
 		img.alt = 'GitHub Stats';
 
 		document.querySelector('.github-stats')?.appendChild(img);

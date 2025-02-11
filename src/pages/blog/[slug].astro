@@ -8,6 +8,7 @@ import Footer from '@components/partials/Footer.astro';
 import Comments from '@components/partials/Comments.astro';
 import FormattedDate from '@components/partials/FormattedDate.astro';
 import PostTags from '@components/partials/PostTags.astro';
+import Author from '@components/partials/Author.astro';
 import TableOfContents from '@components/partials/TableOfContents/TableOfContents.astro';
 import RelatedPosts from '@components/partials/RelatedPosts.astro';
 import { getAllPosts } from '@lib/utils';
@@ -42,23 +43,38 @@ const { Content, headings } = await post.render();
 		<TableOfContents headings={headings} />
 		<div class='max-w-full'>
 			<article
-				class='prose mb-8 overflow-hidden lg:prose-xl max-w-none dark:prose-invert'
+				class='h-entry prose mb-8 overflow-hidden lg:prose-xl max-w-none dark:prose-invert'
 			>
 				<div class='relative'>
 					<Image
 						src={post.data.cover}
 						sizes='(min-width: 1024px) 1024px, 100vw'
 						alt={post.data.title}
-						class='object-cover object-center block w-full max-w-full'
+						class='object-cover object-center block w-full max-w-full not-prose mb-8'
 					/>
 				</div>
-				<h1 class='md:!text-5xl md:!leading-[1.2]'>{post.data.title}</h1>
+				<h1 class='p-name md:!text-5xl md:!leading-[1.2] group'>
+					{post.data.title}
+					<a
+						href={'/blog/' + post.slug}
+						class='u-url inline-block w-[1em] h-[1em] text-inherit align-[-0.125em] opacity-0 transition-colors text-silver hover:text-lightslategray dark:text-lightslategray dark:hover:text-lightgray focus:opacity-100 hover:opacity-100 group-hover:opacity-100 not-prose'
+					>
+						<span class='sr-only'>A link to the article</span>
+						<Icon name='mingcute:link-2-fill' />
+					</a>
+				</h1>
+
+				<Author class='not-prose' />
 
 				<div class='flex gap-x-4 gap-y-1 flex-wrap'>
 					<span class='flex items-center gap-x-1 opacity-85'>
 						<span class='sr-only'>Publication date</span>
 						<Icon name='meteor-icons:calendar' class='h-6 w-6' />
-						<FormattedDate date={post.data.date} longMonth={true} />
+						<FormattedDate
+							class='dt-published'
+							date={post.data.date}
+							longMonth={true}
+						/>
 					</span>
 
 					{
@@ -66,7 +82,11 @@ const { Content, headings } = await post.render();
 							<span class='flex items-center gap-x-1 opacity-85'>
 								<span class='sr-only'>Last modified date</span>
 								<Icon name='meteor-icons:clock-rotate' class='h-6 w-6' />
-								<FormattedDate date={post.data.lastModifiedDate} longMonth={true} />
+								<FormattedDate
+									class='dt-updated'
+									date={post.data.lastModifiedDate}
+									longMonth={true}
+								/>
 							</span>
 						)
 					}
@@ -78,7 +98,9 @@ const { Content, headings } = await post.render();
 					</span>
 				</div>
 
-				<Content />
+				<div class='e-content content'>
+					<Content />
+				</div>
 
 				<PostTags tags={post.data.tags} class='mb-2' />
 
@@ -117,7 +139,7 @@ const { Content, headings } = await post.render();
 
 	document
 		.querySelectorAll(
-			'article > h2, article > h3, article > h4, article > h5, article > h6',
+			'article > div.content > h2, article > div.content > h3, article > div.content > h4, article > div.content > h5, article > div.content > h6',
 		)
 		.forEach((heading) => observer.observe(heading));
 </script>

@@ -23,7 +23,8 @@ const renderedPosts = allPosts.slice(0, MAX_VISIBLE_POSTS_ON_MAIN_PAGE);
 								title={post.data.title}
 								tags={post.data.tags}
 								slug={post.slug}
-								date={post.data.date}
+								publishedDate={post.data.date}
+								lastModifiedDate={post.data.lastModifiedDate}
 								body={post.body}
 							/>
 						</li>

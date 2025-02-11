@@ -10,6 +10,7 @@ export const MAX_VISIBLE_POSTS_ON_MAIN_PAGE = 6;
 export const START_YEAR = 2025;
 export const MAX_TAGS = 8;
 export const STATUS = '🍵';
+export const NOTES = 'Build things';
 
 export const TWITTER_USERNAME = '@itsnuckle';
 export const TWITTER_URL = 'https://twitter.com/itsnuckle';
@@ -37,6 +38,7 @@ export const GISCUS_INPUT_POSITION = 'bottom';
 export const GISCUS_LANG = 'en';
 export const GISCUS_LAZY = true;
 
+export const GITHUB_STATS_URL = 'https://github-readme-stats-rho-blue-57.vercel.app';
 export const GITHUB_STATS_USERNAME = 'nuckle';
 export const GITHUB_STATS_SHOW_ICONS = true;
 export const GITHUB_STATS_HIDE_BORDER = false;

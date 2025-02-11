@@ -8,7 +8,7 @@
 	--slategray: #4c515d;
 	--gunmetal: #373a42;
 	--gainsboro: #dddee0;
-	--dracula: #282A36;
+	--dracula: #282a36;
 	--darkblack: #1f202a;
 	--cornflowerblue: #44aeee;
 	--steelblue: #7d9cbb;
@@ -296,5 +296,21 @@ html.dark .pagefind-ui__button:hover {
 	pointer-events: none;
 	text-decoration: none;
 	position: absolute;
-	left: -.5rem;
+	left: -0.5rem;
+}
+
+.swap {
+	cursor: pointer;
+	display: inline-grid;
+	place-content: center;
+	position: relative;
+	user-select: none;
+}
+
+.swap > * {
+	grid-column-start: 1;
+	grid-row-start: 1;
+	transition-duration: 0.3s;
+	transition-property: transform, opacity;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
