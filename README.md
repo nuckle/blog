@@ -8,7 +8,7 @@
 ## ✨ Features
 
 - Comments via [Giscus](https://giscus.app/)
-- Atom feed (RSS), Sitemap and PWA support
+- RSS feed, Sitemap and PWA support
 - Easy configuration via [config.ts](https://github.com/nuckle/blog/tree/main/src/config.ts)
 - SEO-friendly with JSON-LD and meta information
 - Built-in search powered by [pagefind](https://pagefind.app)
