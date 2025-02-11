@@ -13,6 +13,7 @@
 - SEO-friendly with JSON-LD and meta information
 - Built-in search powered by [pagefind](https://pagefind.app)
 - Write posts and pages in `.mdx` format
+- Partial [IndieWeb](https://indieweb.org) compatibility
 
 ## 🛠️ Getting Started
 
