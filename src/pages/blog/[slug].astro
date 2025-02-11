@@ -52,8 +52,8 @@ const { Content, headings } = await post.render();
 						class='object-cover object-center block w-full max-w-full not-prose mb-8'
 					/>
 				</div>
-				<h1 class='p-name md:!text-5xl md:!leading-[1.2] group'>
-					{post.data.title}
+				<h1 class='md:!text-5xl md:!leading-[1.2] group'>
+					<span class='p-name'>{post.data.title}</span>
 					<a
 						href={'/blog/' + post.slug}
 						class='u-url inline-block w-[1em] h-[1em] text-inherit align-[-0.125em] opacity-0 transition-colors text-silver hover:text-lightslategray dark:text-lightslategray dark:hover:text-lightgray focus:opacity-100 hover:opacity-100 group-hover:opacity-100 not-prose'
