@@ -31,11 +31,11 @@ const postUrl = '/blog/' + slug;
 			<ReadingTime class='opacity-65' body={body} />
 		</div>
 
-		<h2 class='font-bold mb-4'>
-			<a class='w-fit line-clamp-3' href={postUrl}>
+		<a class='w-fit line-clamp-3' href={postUrl}>
+			<h2 class='font-bold mb-4'>
 				{title}
-			</a>
-		</h2>
+			</h2>
+		</a>
 
 		<PostTags tags={tags} />
 	</section>
