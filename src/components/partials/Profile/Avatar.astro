@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { AUTHOR } from '@src/config';
+import avatar from '@assets/img/avatar.png';
 
 interface Props {
 	class?: string;
@@ -10,10 +11,8 @@ const { class: className } = Astro.props;
 ---
 
 <Image
-	class:list={['u-photo rounded-full h-fit', className]}
-	src='/avatar.png'
+	class:list={['u-photo rounded-full h-fit w-24 h-24 md:w-32 md:h-32', className]}
+	src={avatar}
 	alt={AUTHOR}
 	loading='lazy'
-	width='140'
-	height='140'
 />
