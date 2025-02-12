@@ -125,7 +125,7 @@ const { Content, headings } = await post.render();
 				let activeTocItem = null;
 
 				for (const entry of entries) {
-					const tocItem = document.querySelector(`a[href="#${entry.target.id}"]`);
+					const tocItem:HTMLElement | null = document.querySelector(`a[href="#${entry.target.id}"]`);
 
 					if (entry.isIntersecting) {
 						activeTocItem = tocItem;

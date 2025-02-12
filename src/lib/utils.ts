@@ -1,6 +1,7 @@
 import type { CollectionItem } from '@src/types/CollectionItem';
 import type { Post } from '@src/types/Post';
 import type { CollectionKey } from 'astro:content';
+import type { BreadcrumbList, ListItem } from 'schema-dts';
 import { getCollection } from 'astro:content';
 import { slug as slugify } from 'github-slugger';
 
@@ -32,6 +33,49 @@ export async function getPostsByTag(value: string) {
 export function createURL(base: string, path: string): string {
 	const url = new URL(path, base);
 	return url.href;
+}
+
+export function createBreadcrumbList(
+	site: string,
+	currentPath: string,
+	pageTitle: string,
+): BreadcrumbList {
+	const breadcrumbs: ListItem[] = [
+		{
+			'@type': 'ListItem',
+			position: 1,
+			name: 'Home',
+			item: site,
+		},
+	];
+
+	if (currentPath === '/') {
+		return {
+			'@type': 'BreadcrumbList',
+			itemListElement: breadcrumbs,
+		};
+	}
+
+	const segments = currentPath.replace(/^\/+|\/+$/g, '').split('/');
+	let pathAccumulator = '';
+
+	segments.forEach((segment, index) => {
+		const currentPosition = index + 2;
+		const formattedName = segment.charAt(0).toUpperCase() + segment.slice(1);
+
+		pathAccumulator += `/${segment}`;
+		breadcrumbs.push({
+			'@type': 'ListItem',
+			position: currentPosition,
+			name: index + 1 === segments.length ? pageTitle : formattedName,
+			item: createURL(site, pathAccumulator),
+		});
+	});
+
+	return {
+		'@type': 'BreadcrumbList',
+		itemListElement: breadcrumbs,
+	};
 }
 
 const getCollectionFilter = async (
