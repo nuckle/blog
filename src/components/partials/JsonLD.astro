@@ -3,7 +3,14 @@ import { Schema } from 'astro-seo-schema';
 import { getImage } from 'astro:assets';
 import { createURL, formatDate, createBreadcrumbList } from '@lib/utils';
 import type { Post } from '@src/types/Post';
-import type { Thing, Person, BlogPosting, WebSite, WebPage, Blog } from 'schema-dts';
+import type {
+	Thing,
+	Person,
+	BlogPosting,
+	WebSite,
+	WebPage,
+	Blog,
+} from 'schema-dts';
 
 import { TITLE, DESCRIPTION, AUTHOR } from '@src/config';
 
@@ -49,7 +56,7 @@ const graphWebsite: WebSite = {
 
 const graphWebPage: WebPage = {
 	'@type': 'WebPage',
-	"@id": currentUrl,
+	'@id': currentUrl,
 	url: `${site}`,
 	name: pageTitle,
 	description: pageDescription,
@@ -74,9 +81,7 @@ graphArray.push(breadcrumbList);
 if (currentPath === '/' || currentPath === '') {
 	graphArray.push(graphWebsite);
 	graphArray.push(graphBlog);
-}
-
-if (currentPath.split('/').filter(Boolean)[0] === 'blog') {
+} else if (currentPath.split('/').filter(Boolean)[0] === 'blog') {
 	graphArray.push(graphBlog);
 } else {
 	graphArray.push(graphWebPage);
