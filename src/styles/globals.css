@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+	height: 100%;
+	position: fixed;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
+	width: 100%;
+}
+
 :root {
 	--darkslategray: #282a36;
 	--sandybrown: #f7b269;
@@ -35,6 +43,9 @@
 html {
 	scroll-behavior: smooth;
 	background-color: var(--accent-light);
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
 }
 
 html .prose {
