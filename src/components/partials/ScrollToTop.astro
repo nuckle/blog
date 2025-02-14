@@ -41,7 +41,7 @@ import { Icon } from 'astro-icon/components';
 	import { toggleActiveTocItem } from '@src/lib/helpers';
 
 	const scrollToTopBtn = document.querySelector('#scrollToTopBtn');
-	const rootElement = document.documentElement;
+	const rootElement = document.body;
 	let lastScrollTop = 0;
 
 	function handleScroll() {
@@ -88,5 +88,5 @@ import { Icon } from 'astro-icon/components';
 	}
 
 	scrollToTopBtn?.addEventListener('click', scrollToTop);
-	document.addEventListener('scroll', handleScroll, { passive: true });
+	document.body.addEventListener('scroll', handleScroll, { passive: true });
 </script>
