@@ -11,11 +11,36 @@ import noGenSearch from '@assets/img/thumbnails/nogen-search.png';
 <Layout
 	title='Projects'
 	description='My personal and professional projects, ranging from web development to creative experiments and passion projects. Showcasing my skills, ideas, and innovations in various fields.'
+	class='space-y-7'
 >
-	<ProjectCard title={'Minecraft Offline UUID generator'} description={'A web tool to fetch Minecraft UUIDs from usernames. Supports both online mode (via Mojang API) and offline mode for non-premium accounts'} tags={['PWA', 'JavaScript', 'Vite', 'SASS']} link={'https://github.com/nuckle/minecraft-offline-uuid-generator'} img={minecraftImage} class='mb-7' />
-	<ProjectCard title={'YouTube Channel Id Extractor'} description={'A lightweight tool to extract YouTube channel IDs from any type of URL, including videos, playlists, and community posts'} tags={['TypeScript', 'PWA', 'Next.js']} link={'https://github.com/nuckle/youtube-channel-id-extractor'} img={youtubeChannelImage} class='mb-7' />
+	<ProjectCard
+		title={'Minecraft Offline UUID generator'}
+		description={'A web tool to fetch Minecraft UUIDs from usernames. Supports both online mode (via Mojang API) and offline mode for non-premium accounts'}
+		tags={['PWA', 'JavaScript', 'Vite', 'SASS']}
+		link={'https://github.com/nuckle/minecraft-offline-uuid-generator'}
+		img={minecraftImage}
+	/>
+	<ProjectCard
+		title={'YouTube Channel Id Extractor'}
+		description={'A lightweight tool to extract YouTube channel IDs from any type of URL, including videos, playlists, and community posts'}
+		tags={['TypeScript', 'PWA', 'Next.js']}
+		link={'https://github.com/nuckle/youtube-channel-id-extractor'}
+		img={youtubeChannelImage}
+	/>
 
-	<ProjectCard title={'Reddit Mobile Chat Fix'} description={'A browser extension that improves the Reddit chat experience on mobile by fixing UI issues and enhancing usability'} tags={['TypeScript', 'Vite', 'Browser extension']} link={'https://github.com/nuckle/reddit-mobile-chat-fix'} img={redditChatMobile} class='mb-7' />
+	<ProjectCard
+		title={'Reddit Mobile Chat Fix'}
+		description={'A browser extension that improves the Reddit chat experience on mobile by fixing UI issues and enhancing usability'}
+		tags={['TypeScript', 'Vite', 'Browser extension']}
+		link={'https://github.com/nuckle/reddit-mobile-chat-fix'}
+		img={redditChatMobile}
+	/>
 
-	<ProjectCard title={'NoGen Search'} description={'A browser extension that helps to filter AI-generated content and disables AI features on popular search engines like Google, Bing, and DuckDuckGo'} tags={['TypeScript', 'Vite', 'Browser extension', 'Svelte']} link={'https://github.com/nuckle/nogen-search'} img={noGenSearch}  />
+	<ProjectCard
+		title={'NoGen Search'}
+		description={'A browser extension that helps to filter AI-generated content and disables AI features on popular search engines like Google, Bing, and DuckDuckGo'}
+		tags={['TypeScript', 'Vite', 'Browser extension', 'Svelte']}
+		link={'https://github.com/nuckle/nogen-search'}
+		img={noGenSearch}
+	/>
 </Layout>
