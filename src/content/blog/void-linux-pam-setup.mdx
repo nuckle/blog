@@ -1,0 +1,143 @@
+---
+title: "GnuPG and SSH PAM modules configuration on Void Linux"
+date: 2025-02-19
+description: A guide to configuring PAM on Void Linux, covering modules like pam_ssh and pam-gnupg
+tags: [linux, void linux, pam]
+keywords: [void linux, linux pam, pam module setup, ssh pam, gnupg pam, pam_ssh, pam-gnupg, pluggable authentication module]
+cover: '@assets/img/thumbnails/void-linux-pam-setup.png'
+---
+
+If you want to use password-protected SSH and GnuPG keys, this guide is probably for you. I think it might be quite handful for personal usage, if still want to have some layer of security, but also don't want to type passwords each time you need to access these keys.
+
+**IMPORTANT**: ensure you understand what you're doing. Misconfiguring PAM can lock all users out of the system.
+
+
+## What is a PAM
+
+>PAM provides a way to develop programs that are independent of authentication scheme. These programs need "authentication modules" to be attached to them at run-time in order to work. Which authentication module is to be attached is dependent upon the local system setup and is at the discretion of the local system administrator.
+
+[Source](https://cdn.kernel.org/pub/linux/libs/pam/whatispam.html)
+
+Basically, it acts as an authentication layer between the system and applications. Instead of configuring authentication for each application individually, you modify PAM's system-wide configuration files
+
+## Configuration
+
+
+### GnuPG Module
+
+First, install `pam-gnupg` package itself
+
+```sh
+$ xbps-install -Sy pam-gnupg
+```
+
+Then, add the following lines to `/etc/pam.d/system-local-login`
+
+```conf
+auth      optional  pam_gnupg.so store-only
+session   optional  pam_gnupg.so
+```
+
+Your configuration should look something like this:
+
+
+```conf
+# system-local-login example
+
+auth      include   system-login
+auth      optional  pam_gnupg.so store-only
+account   include   system-login
+password  include   system-login
+session   include   system-login
+session   optional  pam_gnupg.so
+```
+
+If you have a custom `$GNUPGHOME` directory, append this line to `/etc/security/pam_env.conf`. For example, if you’ve set it to `$XDG_CONFIG_HOME/gnupg`, use:
+
+```sh
+GNUPGHOME DEFAULT=@{HOME}/.config/gnupg
+```
+
+Optionally, if you use `i3lock`, add `auth optional pam_gnupg.so` line to `/etc/pam.d/i3lock`:
+
+```conf
+#auth include system-local-system-auth # For Arch/Gentoo
+auth include system-auth # For Debian
+
+auth optional pam_gnupg.so
+```
+
+You can do the same for any other screen locker. However, this only makes sense if you clear your password cache before locking the screen by running:
+
+```sh
+$ gpg-connect-agent --no-autostart reloadagent /bye
+```
+
+Finally, modify your `gpg-agent.conf` (usually, located in `~/.gnupg/gpg-agent.conf`, or `$XDG_CONFIG_HOME/gnupg`)
+
+```conf
+allow-preset-passphrase
+
+# Optional, if you want to customize password cache timeout
+max-cache-ttl 86400
+```
+
+Now run `gpg -K --with-keygrip` command
+
+```sh "FBDEAD7B0C484CDC85F1CF70352833EB0C921D58"
+$ gpg -K --with-keygrip
+sec   rsa2048 2018-11-16 [SC]
+      9AB5DD43C5E5FD40475FA6DA0D776275F7F5B2E7
+      Keygrip = 6F4ABB77A88E922406BCE6627AFEEE2363914B76
+uid           [ultimate] Chris Ruegge <mail@cxcs.de>
+ssb   rsa2048 2018-11-16 [E]
+      Keygrip = FBDEAD7B0C484CDC85F1CF70352833EB0C921D58
+```
+
+Copy the keygrip for the encryption subkey (`[E]` in the output) and save it in `.pam-gnupg`. If you need to unlock multiple keys, add each keygrip on a new line.
+
+The `pam-gnupg` config file should be placed at either `$XDG_CONFIG_HOME/pam-gnupg` or `~/.pam-gnupg`.
+
+Now, if you have the same password for your gpg key and your user account, you keys will be automatically unlocked, unless you have some sort of auto-login on your system (all `pam-gnupg` does is to send the password as entered to gpg-agent. It is therefore not compatible with auto-login of any kind)
+
+### SSH Module
+
+Setting up SSH authentication is easier. First, install the `pam_ssh` module:
+
+
+```sh
+$ xbps-install -Sy pam_ssh
+```
+
+Then, add these lines to `/etc/pam.d/login`:
+
+```conf
+auth 		optional 	pam_ssh.so        try_first_pass
+session 	optional 	pam_ssh.so
+```
+
+This will prompt a user to enter a password, as usual, but it'll try to decrypt their SSH keys with this password. If it fails, it'll prompt a user to enter an SSH password. This allows us to avoid entering the same password twice.
+
+Ensure that `/etc/pam.d/login` has similar structure to this:
+
+```conf
+auth 		required 	pam_securetty.so
+auth 		requisite 	pam_nologin.so
+auth 		include 	system-local-login
+auth 		optional 	pam_ssh.so        try_first_pass
+
+account 	include 	system-local-login
+session 	include 	system-local-login
+session 	optional 	pam_ssh.so
+```
+
+Some notes for `pam_ssh`:
+
+- Symlink your private keys to `~/.ssh/login-keys.d` using `ln -s`
+- Delete any old agent-XXX files in `~/.ssh`
+
+## Conclusion
+
+This post is mainly to document my PAM configuration - hope it helps!
+
+
