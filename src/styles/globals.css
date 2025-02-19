@@ -143,6 +143,10 @@ html.dark [data-rehype-pretty-code-title] {
 	@apply text-gray-200;
 }
 
+html.dark [data-highlighted-chars] {
+	@apply bg-gray-500;
+}
+
 [data-highlighted-line] {
 	border-left-width: 2px;
 	border-left-style: solid;
