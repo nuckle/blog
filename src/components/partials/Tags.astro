@@ -33,7 +33,7 @@ const { activeTag, class: className } = Astro.props;
 		))
 	}
 
-	{allTags.length >= MAX_TAGS && (
+	{allTags.length > MAX_TAGS && (
 	<li>
 		<button class='flex items-center h-full rounded-md border-2 border-cornflowerblue py-1 px-2 transition-colors hover:bg-cornflowerblue focus:outline-none hover:dark:bg-hotpink border-hotpink gap-x-1' id='showMoreBtn'>
 			<span data-alt-text='Show Less'>Show more</span>
