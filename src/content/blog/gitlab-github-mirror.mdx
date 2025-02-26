@@ -1,0 +1,72 @@
+---
+title: "Mirror GitLab repositories to GitHub"
+date: 2025-02-26
+description: Guide on automatically mirroring your GitLab repository to GitHub. A step-by-step guide on Git repository mirroring
+tags: [git, gitlab, github]
+keywords: [gitlab github mirror, gitlab repository mirror, gitlab backup github, gitlab to github sync, gitlab to github mirroring, git mirror repository, automatic git sync, gitlab github integration, gitlab mirroring setup, git repository backup]
+cover: '@assets/img/thumbnails/gitlab-github-mirror.png'
+---
+
+import { Image } from 'astro:assets';
+import gitlabRepository from '@assets/img/content/gitlab-github-mirror/gitlab-repository.png';
+import gitlabSshPublicKey from '@assets/img/content/gitlab-github-mirror/gitlab-ssh-public-key.png';
+import gitlabMirrorSettings from '@assets/img/content/gitlab-github-mirror/gitlab-mirror-settings.png';
+import githubRepository from '@assets/img/content/gitlab-github-mirror/github-repository.png';
+import githubDeployToken from '@assets/img/content/gitlab-github-mirror/github-deploy-token.png';
+import githubSuccessMirror from '@assets/img/content/gitlab-github-mirror/github-success-mirror.png';
+import gitlabSuccessMirror from '@assets/img/content/gitlab-github-mirror/gitlab-success-mirror.png';
+
+I was looking for an alternative to GitHub to have an additional backup for my repositories. So far, I really like GitLab for many reasons - but I won’t go into that today. Instead, I want to show you how to mirror your repositories to GitHub.
+
+## Basics
+
+First, create a repository on both platforms. I'll refer to both as `test-repository`.
+
+<Image src={gitlabRepository} alt="Newly created GitLab repository" />
+<Image src={githubRepository} alt="Newly created GitHub repository" />
+
+## GitLab Setup
+
+Next, on your GitLab repository page, navigate to **Settings** → **Repository** → **Mirroring repositories**, and add a new repository.
+
+You need to modify your GitHub URL. If your SSH URL is:
+
+```plaintext
+git@github.com:nuckle/test-repository.git
+```
+
+The URL you need should be:
+
+```plaintext
+ssh://github.com/nuckle/test-repository.git
+```
+
+Now, click **Detect host keys** and wait until it displays a list of fetched fingerprints.
+
+Select **SSH public key** as the authentication method. You can leave the **Username** field empty. The settings below are optional.
+
+<Image src={gitlabMirrorSettings} alt="GitLab Mirroring settings" />
+
+Click the **Mirror** button.
+
+## GitHub Setup
+
+Now, for the final part. Copy your SSH public key and add it to your GitHub deploy keys.
+
+<Image src={gitlabSshPublicKey} alt="GitLab deploy key" />
+
+**Note:** Ensure that you grant it **write access**.
+
+<Image src={githubDeployToken} alt="Adding GitLab deploy key to GitHub repository" />
+
+## Final Step
+
+Click the **Update now** button, or push changes to your GitLab repository.
+
+If everything is set up correctly, you should see the following:
+
+<Image src={githubSuccessMirror} alt="GitLab repository page" />
+<Image src={gitlabSuccessMirror} alt="GitHub repository page" />
+
+I decided to write this post because I struggled to find a good guide for this setup a long time ago :)
+
