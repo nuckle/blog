@@ -1,0 +1,115 @@
+---
+title: "A closer look at Lenovo SK-8855 keyboard"
+date: 2025-02-20
+description: A detailed review of the Lenovo SK-8855 keyboard, including its design, disassembly, switches, TrackPoint experience, and software compatibility on Linux and Windows.
+tags: [sk-8855, thinkpad, lenovo, keyboard]
+keywords: [thinkpad, Lenovo SK-8855, ThinkPad keyboard, TrackPoint, ThinkPad accessories, SK-8855 review, ThinkPad mods, Lenovo keyboard review, thinkpad classic keyboard, SK 8855]
+cover: '@assets/img/thumbnails/closer-look-at-sk-8855.png'
+---
+
+import { Image } from 'astro:assets';
+import overview from '@assets/img/content/closer-look-at-sk-8855/overview.jpg';
+import back from '@assets/img/content/closer-look-at-sk-8855/back.jpg';
+import backSticker from '@assets/img/content/closer-look-at-sk-8855/back-sticker.jpg';
+import hiddenBoltOne from '@assets/img/content/closer-look-at-sk-8855/hidden-bolt-1.jpg';
+import hiddenBoltTwo from '@assets/img/content/closer-look-at-sk-8855/hidden-bolt-2.jpg';
+import lowercaseOne from '@assets/img/content/closer-look-at-sk-8855/lowercase-1.jpg';
+import lowercaseTwo from '@assets/img/content/closer-look-at-sk-8855/lowercase-2.jpg';
+import uppercaseOne from '@assets/img/content/closer-look-at-sk-8855/uppercase-1.jpg';
+import uppercaseTwo from '@assets/img/content/closer-look-at-sk-8855/uppercase-2.jpg';
+import specs from '@assets/img/content/closer-look-at-sk-8855/specs.jpg';
+import keyboardDetached from '@assets/img/content/closer-look-at-sk-8855/keyboard-detached.jpg';
+import pcbOne from '@assets/img/content/closer-look-at-sk-8855/pcb-1.jpg';
+import pcbTwo from '@assets/img/content/closer-look-at-sk-8855/pcb-2.jpg';
+import keyboardOne from '@assets/img/content/closer-look-at-sk-8855/keyboard-1.jpg';
+import keyboardTwo from '@assets/img/content/closer-look-at-sk-8855/keyboard-2.jpg';
+import connector from '@assets/img/content/closer-look-at-sk-8855/connector.png';
+import switches from '@assets/img/content/closer-look-at-sk-8855/switches.jpg';
+import legs from '@assets/img/content/closer-look-at-sk-8855/legs.jpg';
+import keyboardType from '@assets/img/content/closer-look-at-sk-8855/keyboard_type.png';
+
+## First Look
+
+Recently, I got my hands on a Lenovo SK-8855 keyboard with a Spanish layout. Its condition is pretty good overall.
+
+<Image src={overview} alt="Overview of Lenovo SK-8855" />
+
+This particular keyboard revision is **R00**. I recall that these keyboards suffer from a controller bug that capitalizes the first two letters when typing very fast (100+ WPM). I didn’t notice it myself - maybe I’m just a slow typer! 😁
+
+<Image src={backSticker} alt="Back sticker of Lenovo SK-8855" />
+
+To be honest, it feels like Lenovo tried to cut costs by making the bottom part more minimalistic. Compared to the SK-8845, it lacks additional cable routing options (only the center is available), and the legs have just one position. It’s fine, but it feels like a downgrade from the previous model.
+
+<Image src={back} alt="Back of Lenovo SK-8855" />
+<Image src={legs} alt="Keyboard legs of Lenovo SK-8855" />
+
+## Disassembly
+
+To disassemble this keyboard, you need to remove eight screws in total - six visible ones and two hidden under stickers. Then, carefully detach the two halves of the case. I recommend using a plastic card for this. It was easier to start from the bottom to handle the mounting points.
+
+<Image src={hiddenBoltOne} alt="Hidden screw location 1" />
+<Image src={hiddenBoltTwo} alt="Hidden screw location 2" />
+
+<Image src={lowercaseOne} alt="Lower case part 1" />
+<Image src={lowercaseTwo} alt="Lower case part 2" />
+
+The upper case has no screws; the keyboard simply sits in place.
+
+<Image src={uppercaseOne} alt="Upper case part 1" />
+<Image src={uppercaseTwo} alt="Upper case part 2" />
+<Image src={specs} alt="Specifications of Lenovo SK-8855" />
+<Image src={keyboardDetached} alt="Keyboard detached from case" />
+
+This PCB serves as the USB controller that makes this keyboard unique. Without it, it would just be a standard ThinkPad keyboard - similar to the SK-8845, which isn’t compatible with laptop keyboards like this one.
+
+<Image src={pcbOne} alt="PCB of Lenovo SK-8855" />
+<Image src={pcbTwo} alt="Another view of PCB" />
+
+The keyboard itself is nearly identical to the one found in the x20 series ThinkPads. There are small differences, such as the absence of a power button, but overall, they are interchangeable.
+
+<Image src={keyboardOne} alt="Keyboard comparison 1" />
+<Image src={keyboardTwo} alt="Keyboard comparison 2" />
+
+The connector here is a standard 40-pin one. It provides a safe way to connect your keyboard to the PCB (or a motherboard in the case of a laptop) without damaging the connector, as the actual keyboard pinout is located on the other side.
+
+<Image src={connector} alt="40-pin connector" />
+
+## Switches
+
+It looks like this keyboard uses NMB switches. I’m not an expert, so take this with a grain of salt.
+
+<Image src={keyboardType} alt="Keyboard type label" />
+
+Regardless, they feel nice to type on.
+
+<Image src={switches} alt="Close-up of switches" />
+
+## TrackPoint
+
+The TrackPoint cap was missing, so I replaced it with one from my collection. Out of the box, the experience feels worse compared to a laptop. The cursor is less responsive, slower, and has worse acceleration. I tested multiple cap types, but the result remained the same.
+
+Overall, without tweaking, it’s not very usable. It’s cool that it works on any system I’ve tried, but the experience is just not great.
+
+## Software
+
+### Linux
+
+On Linux, everything works out of the box since the keyboard uses kernel drivers. Proper scrolling, middle mouse functionality - zero issues. However, I still find it slow by default on systems I’ve tried.
+
+To fix this, I tried different `xinput` commands to adjust cursor settings, but they also affected my mouse settings and lacked Wayland support. The ultimate solution was to create a [udev rule](https://gist.github.com/nuckle/21d8c6d2c00f6319018ebeb81f3fa9da). It has fewer options compared to `libinput`, but enough to make the cursor faster.
+
+I also wrote [a small script](https://github.com/nuckle/dotfiles/blob/main/.local/bin/thinkpadledd) to fix LED indicators for the speaker mute state. Yes, they don’t work out of the box - it seems like they were intended to function only under Windows with specific drivers.
+
+### Windows
+
+On Windows, the TrackPoint and scrolling experience is worse compared to Linux, but still usable.
+
+I used [TPmiddle](https://github.com/Jyny/TPmiddle), and while it wasn’t perfect, it got the job done.
+
+However, there seems to be a better alternative called [TrackPointDriver](https://github.com/Slion/TrackPointDriver). I’d recommend trying this one instead.
+
+## Personal Experience
+
+I really like this keyboard, but I feel it’s a bit overhyped. I didn’t pay $300 for it, nor did I actively search for months. I got it cheaply and mostly by accident. Under these conditions, I like it - but otherwise, it’s just too expensive. Maybe it’s a good item for a collection, but there are far better options available if you’re willing to spend that much money.
+
+Also, the construction doesn’t feel very strong. After all, it’s just two pieces of plastic held together by eight screws. It’s quite thin. I’d recommend checking out [this ThinkWiki article on mitigating this issue](https://thinkwiki.de/USB_Keyboard_Mod). That said, I do like the fact that it’s lightweight - it’s not as heavy as you might expect.
