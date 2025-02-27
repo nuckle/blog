@@ -35,7 +35,7 @@ const { activeTag, class: className } = Astro.props;
 
 	{allTags.length > MAX_TAGS && (
 	<li>
-		<button class='flex items-center h-full rounded-md border-2 border-cornflowerblue py-1 px-2 transition-colors hover:bg-cornflowerblue focus:outline-none hover:dark:bg-hotpink border-hotpink gap-x-1' id='showMoreBtn'>
+		<button class='flex items-center h-full rounded-md border-2 border-cornflowerblue py-1 px-2 transition-colors hover:bg-cornflowerblue focus:outline-none hover:dark:bg-hotpink hover:text-gray-200 dark:border-hotpink gap-x-1' id='showMoreBtn'>
 			<span data-alt-text='Show Less'>Show more</span>
 			<Icon name="meteor-icons:plus" class="plus h-4 w-4" />
 			<Icon name="meteor-icons:minus" class="minus hidden h-4 w-4" />
